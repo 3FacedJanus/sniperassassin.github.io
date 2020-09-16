@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Sniper Assassin Roulette</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+* {
+  box-sizing: border-box;
+}
+
+.column {
+  float: left;
+  width: 25%;
+  padding: 10px;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.colorline {
+  float: left;
+  width: 100%;
+  padding: 10px;
+}
+
+.fadedcolorline {
+  float: left;
+  width: 100%;
+  opacity: 100%;
+  padding: 5px;
+}
+
+.scorecardline1 {
+  float: left;
+  width: 50%;
+  opacity: 90%;
+  padding: 3px;
+}
+
+.scorecardline2 {
+  float: left;
+  width: 25%;
+  opacity: 90%;
+  padding: 3px;
+}
+
+div.solid {border-style: solid;}
+
+body {
+  background-image: url('https://i.imgur.com/vlPPQ9m.png');
+  background-repeat: no-repeat;
+  background-color: "#FFFFFF";
+}
+</style>
+</head>
+<body style="font-family:calibri; font-size: 16px; color:black;" onload="bgChange()">
+<span style="font-family:Microsoft JhengHei UI; font-size: 30px; font-weight: bold;">SNIPER ASSASSIN ROULETTE</span>
+<br />
+<span>Version 1.0</span>
+<hr>
+<button onclick="preroulette()">Reroll Roulette</button>
+<button onclick="randommission()">Random Mission</button>
+<button onclick="advance()">Advance to Next Mission</button>
+<br />
+<br />
+<span class="colorline" id="missiontitle" style="background-color:#353535; font-family:Microsoft JhengHei UI; color:white; font-weight: bold; font-size: 20px;"></span>
+<div class="row">
+  <div class="column" value="target1column" style="background-color:#212121;">
+    <p id="target1pic"></p>
+    <span id="target1killconditions" style="list-style: none; font-family:Microsoft JhengHei UI; font-size: 20px; line-height: 30px; font-weight: bold; color:white"></span>
+  </div>
+  <div class="column" value="target2column" style="background-color:#313131;">
+    <p id="target2pic"></p>
+    <span id="target2killconditions" style="list-style: none; font-family:Microsoft JhengHei UI; font-size: 20px; line-height: 30px; font-weight: bold; color:white"></span>
+  </div>
+  <div class="column" value="target3column" style="background-color:#414141;">
+    <p id="target3pic"></p>
+    <span id="target3killconditions" style="list-style: none; font-family:Microsoft JhengHei UI; font-size: 20px; line-height: 30px; font-weight: bold; color:white"></span>
+  </div>
+  <div class="column" value="target4column" style="background-color:#515151;">
+    <p id="target4pic"></p>
+    <span id="target4killconditions" style="list-style: none; font-family:Microsoft JhengHei UI; font-size: 20px; line-height: 30px; font-weight: bold; color:white"></span>
+  </div>
+</div>
+<span class="fadedcolorline" id="challengeconditions1" style="background-color:#616161; list-style: none; font-family:Microsoft JhengHei UI; font-size: 20px; line-height: 30px; font-weight: bold; color:white"></span>
+<!--<span class="fadedcolorline" id="challengeconditions2" style="background-color:#515151; list-style: none; font-family:Microsoft JhengHei UI; font-size: 20px; line-height: 30px; font-weight: bold; color:white"></span>
+<span class="fadedcolorline" id="challengeconditions3" style="background-color:#414141; list-style: none; font-family:Microsoft JhengHei UI; font-size: 20px; line-height: 30px; font-weight: bold; color:white"></span>-->
+<br />
+<br />
+<h2><u>Mission</u></h2>
+<select id="mission" onchange="preroulette()" name="mission" style="background-color: #FFFFFF; color:black;">
+<option style="background-color: #FFFFFF; color:black;" value="rando">Select a Mission</option>
+<option style="background-color: #C2D69B;" value="himmelstein">The Last Yardbird (Himmelstein)</option>
+<option style="background-color: #AE6D2A; color:black;" value="hantuport" >The Pen and the Sword (Hantu Port)</option>
+<option style="background-color: #E0E0E0; color:black;" value="siberia">Crime and Punishment (Siberia)</option>
+</select>
+<br />
+<br />
+<button onclick="advance()">Advance to Next Mission</button>
+<script>
+function bgChange() {
+  var x = document.getElementById("mission").value;
+    if (x == "rando"){
+    document.body.style.backgroundColor = "#FFFFFF";
+    } else if (x == "himmelstein"){
+    document.body.style.backgroundColor = "#C2D69B";
+    } else if (x == "hantuport"){
+    document.body.style.backgroundColor = "#AE6D2A";
+    } else if (x == "siberia"){
+    document.body.style.backgroundColor = "#E0E0E0";
+  } else {
+    document.body.style.backgroundColor = "#FFFFFF";
+  }
+  }
+</script>
+<br />
+<br />
+
+<h2><u>Kill Conditions</u></h2>
+<input id="snipershots" name="snipershots" type="checkbox" value="snipershots" checked/> <label title="Regular sniper rifle kills. Can be any head or body shot." for="snipershots">Sniper Shots</label><br />
+<input id="headshots" name="headshots" type="checkbox" value="headshots" checked/> <label title="Headshot sniper rifle kills." for="headshots">Sniper Headshots</label><br />
+<input id="bodyshots" name="bodyshots" type="checkbox" value="bodyshots"/> <label title="Body shot sniper rifle kills." for="bodyshots">Sniper Body Shots</label><br />
+<input id="accidents" name="accidents" type="checkbox" value="accidents" checked/> <label title="Encompasses all types of accident kills." for="accidents">Accidents</label><br />
+<input id="anykill" name="anykill" type="checkbox" value="anykill"/> <label title="Adds 'Kill using any method' to the possible kill conditions." for="anykill">Player's Choice Kills</label><br />
+<h2><u>Guard Conditions</u></h2>
+<input id="bodyguardkills" name="bodyguardkills" type="checkbox" value="bodyguardkills"/> <label title="If checked, gives you a kill condition that you must try to fulfill for as many guards as possible." for="bodyguardkills">Guard Kill Conditions</label><br />
+
+<h2><u>Challenge Conditions</u></h2>
+<input id="challengeson" name="challengeson" type="checkbox" value="challengeson"/ checked> <label title="Adds an extra in-game Challenge (the type that multiplies your score) to the mission requirements. This Challenge will be drawn from the 'Feats' section and will not affect the kill requirements for the targets." for="challengeson">Add Randomized Challenge</label><br />
+<!--<br />
+<select id="challengenumber" name="challengenumber">
+<option value="1challenge">One Challenge</option>
+<option value="2challenge">Two Challenges</option>
+<option value="3challenge">Three Challenges</option>
+</select>-->
+
+<h2><u>Other Options</u></h2>
+<input id="objroulette" name="objroulette" type="checkbox" value="objroulette" checked/> <label title="Randomize mission objective conditions (only applies to the riot in Siberia)." for="objroulette"> Objective Roulette</label><br />
+<!--<input id="crazywarnings" name="crazywarnings" type="checkbox" value="crazywarnings" checked/> <label title="With this checked, you will receive a popup alerting you of insanely difficult accident kill conditions. Ignore them at your own peril." for="crazywarnings"> Crazy Condition Warnings</label><br />-->
+
+<h2><u>Scorecard</u></h2>
+<div class="row solid">
+<span class="scorecardline1" style="background-color:#C2D69B; font-family:Microsoft JhengHei UI; font-weight: bold; font-size: 18px; float:left;">Himmelstein - The Last Yardbird</span>
+<input type="number" class="scorecardline2" id="v0" style="background-color:#C2D69B; font-family:Microsoft JhengHei UI; font-weight: bold; font-size: 16px; color:black;" onkeyup="calculate()">
+<span class="scorecardline2" style="background-color:#C2D69B; font-family:Microsoft JhengHei UI; font-weight: bold; font-size: 18px;">Points</span>
+<span class="scorecardline1" style="background-color:#AE6D2A; font-family:Microsoft JhengHei UI; font-weight: bold; font-size: 18px; float:left;">Hantu Port - The Pen and the Sword</span>
+<input type="number" class="scorecardline2" id="v1" style="background-color:#AE6D2A; font-family:Microsoft JhengHei UI; font-weight: bold; font-size: 16px; color:black;" onkeyup="calculate()">
+<span class="scorecardline2" style="background-color:#AE6D2A; font-family:Microsoft JhengHei UI; font-weight: bold; font-size: 18px;">Points</span>
+<span class="scorecardline1" style="background-color:#E0E0E0; font-family:Microsoft JhengHei UI; font-weight: bold; font-size: 18px; float:left;">Siberia - Crime and Punishment</span>
+<input type="number" class="scorecardline2" id="v2" style="background-color:#E0E0E0; font-family:Microsoft JhengHei UI; font-weight: bold; font-size: 16px; color:black;" onkeyup="calculate()">
+<span class="scorecardline2" style="background-color:#E0E0E0; font-family:Microsoft JhengHei UI; font-weight: bold; font-size: 18px;">Points</span>
+<span class="scorecardline1" style="background-color:#510000; font-family:Microsoft JhengHei UI; font-weight: bold; font-size: 18px; float:left; color:white;" onkeyup="calculate()">TOTAL SCORE</span>
+<input type="number" class="scorecardline2" id="finalscore" style="background-color:#510000; font-family:Microsoft JhengHei UI; font-weight: bold; font-size: 16px; color:white;" readonly>
+<span class="scorecardline2" style="background-color:#510000; font-family:Microsoft JhengHei UI; font-weight: bold; font-size: 18px; color:white;">Points</span>
+</div>
+
+<script type="text/javascript">
+function calculate(){
+var finalscore = document.getElementById('finalscore');
+var el, i = 0, total = 0; 
+while(el = document.getElementById('v'+(i++)) ) {
+el.value = el.value.replace(/\\D/,"");
+total = total + Number(el.value);
+}
+finalscore.value = total;
+if(document.getElementById('v0').value =="" && document.getElementById('v1').value =="" && document.getElementById('v2').value =="" ){
+ finalscore.value ="";
+}
+}
+</script>
+
+<script>
+function randommission() {
+    var possiblemissions = ["himmelstein", "hantuport", "siberia"];
+    var missionmethod = possiblemissions[Math.floor(Math.random() * possiblemissions.length)];
+    selectElement('mission', missionmethod);
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
+    roulette();
+    }
+</script>
+
+<br />
+<br />
+<button onclick="preroulette()">Reroll Roulette</button>
+<button onclick="randommission()">Random Mission</button>
+<button onclick="advance()">Advance to Next Mission</button>
+<!--------------------------------------------------------------------------------------- ROULETTE STARTS HERE -->
+<script>
+function roulette() {
+    var possiblestarts = [];
+    var possiblekills = [];
+    var possibleguardkills = [];
+    var possiblechallenges = [];
+    var possibledisguises = [];
+    var possibleexits = [];    
+    var possibleobjectives = [];
+    var possiblepickups = [];   
+    var possiblepickupitems = [];   
+    var target1possiblekills = [];  
+    var whittletoncluesmeeting = [];
+    var whittletoncluesnovember13th = [];
+    var whittletoncluesarksociety = [];
+    var whittletoncluesmeetingmethod = [];
+    var whittletoncluesnovember13thmethod = [];
+    var whittletoncluesarksocietymethod = [];
+    var contradictorykills = false;
+    var x = document.getElementById("mission").value;
+    if (x == "rando"){
+    document.getElementById("missiontitle").innerHTML = "";
+    document.getElementById("target1pic").innerHTML = '';
+    document.getElementById("target1killconditions").innerHTML = "";
+    document.getElementById("target2pic").innerHTML = ''; 
+    document.getElementById("target2killconditions").innerHTML = "";
+    document.getElementById("target3pic").innerHTML = '';
+    document.getElementById("target3killconditions").innerHTML = "";
+    document.getElementById("target4pic").innerHTML = '';
+    document.getElementById("target4killconditions").innerHTML = "";
+    document.getElementById("challengeconditions1").innerHTML = "";
+    document.body.style.backgroundColor = "#FFFFFF";
+    }
+  <!-------------------------------------------------------------------------------- HIMMELSTEIN -->
+    if (x == "himmelstein"){
+    bgChange();
+    document.getElementById("missiontitle").innerHTML = "Himmelstein - The Last Yardbird"
+        <!--------------------------------------------- KILL CONDITIONS -->
+        if (document.getElementById("snipershots").checked == true){
+          possiblekills.push("with your sniper rifle.");
+        }
+        if (document.getElementById("headshots").checked == true){
+          possiblekills.push("with a headshot.");
+        }
+        if (document.getElementById("bodyshots").checked == true){
+          possiblekills.push("with a body shot.");
+        }
+        if (document.getElementById("accidents").checked == true){
+          possiblekills.push("in an accident.");
+        }
+        if (document.getElementById("anykill").checked == true){
+          possiblekills.push("using any method.");
+        }
+        <!--------------------------------------------- BODYGUARD KILL CONDITIONS -->
+        if (document.getElementById("bodyguardkills").checked == true){
+        if (document.getElementById("snipershots").checked == true){
+          possibleguardkills.push(" with your sniper rifle.");
+        }
+        if (document.getElementById("headshots").checked == true){
+          possibleguardkills.push(" with headshots.");
+        }
+        if (document.getElementById("bodyshots").checked == true){
+          possibleguardkills.push(" with body shots.");
+        }
+        if (document.getElementById("accidents").checked == true){
+          possibleguardkills.push(" in accidents.");
+        }
+        if (document.getElementById("anykill").checked == true){
+          possibleguardkills.push(".");
+        }
+        }
+        <!--------------------------------------------- CHALLENGES -->
+        if (document.getElementById("challengeson").checked == true){
+        possiblechallenges.push("Agnomaly", "Hawkeye", "Prometheus", "Art Critic", "Faithless", "How Do You Due?", "Psycho Daisies", "Blackout", "And He Shall Rice", "Quacker Than The Eye", "Kiln Time", "Are You Pondering What I'm Pondering?", "Take a Hike", "The Higher You Climb");
+        }
+        
+     var killmethod = possiblekills[Math.floor(Math.random() * possiblekills.length)];
+     if (killmethod == null) {
+     errorreset();
+     }
+     document.getElementById("target1pic").innerHTML = '<img src=\'https://i.imgur.com/WFaZxQh.png\' width="100%" height="100%">';
+     document.getElementById("target1killconditions").innerHTML = "Kill Dorian Lang " + killmethod;
+     
+     var killmethod = possiblekills[Math.floor(Math.random() * possiblekills.length)];
+     if (killmethod == null) {
+     errorreset();
+     }
+     document.getElementById("target2pic").innerHTML = '<img src=\'https://i.imgur.com/0WafBuE.png\' width="100%" height="100%">';
+     document.getElementById("target2killconditions").innerHTML = "Kill Guillaume Maison " + killmethod;
+     
+     var killmethod = possiblekills[Math.floor(Math.random() * possiblekills.length)];
+     if (killmethod == null) {
+     errorreset();
+     }
+     document.getElementById("target3pic").innerHTML = '<img src=\'https://i.imgur.com/nni4Cep.png\' width="100%" height="100%">';
+     document.getElementById("target3killconditions").innerHTML = "Kill Doris Lee " + killmethod;
+     
+     if (document.getElementById("bodyguardkills").checked == true){
+     var guardkillmethod = possibleguardkills[Math.floor(Math.random() * possiblekills.length)];
+     if (guardkillmethod == null) {
+     errorreset();
+     }
+     document.getElementById("target4pic").innerHTML = '<img src=\'https://i.imgur.com/Vfc41iY.png\' width="100%" height="100%">';
+     document.getElementById("target4killconditions").innerHTML = "Kill as many bodyguards as you can" + guardkillmethod;
+     } else {
+     document.getElementById("target4pic").innerHTML = "";
+     document.getElementById("target4killconditions").innerHTML = "";
+     }
+     
+     if (document.getElementById("challengeson").checked == true){
+     var challengemethod1 = possiblechallenges[Math.floor(Math.random() * possiblechallenges.length)];
+     document.getElementById("challengeconditions1").innerHTML = "Complete the Challenge: " + "&diams; " + challengemethod1
+     }
+   }
+<!-------------------------------------------------------------------------------- HANTU PORT -->
+    if (x == "hantuport"){
+    bgChange();
+    document.getElementById("missiontitle").innerHTML = "Hantu Port - The Pen and the Sword"
+        <!--------------------------------------------- KILL CONDITIONS -->
+        if (document.getElementById("snipershots").checked == true){
+          possiblekills.push("with your sniper rifle.");
+        }
+        if (document.getElementById("headshots").checked == true){
+          possiblekills.push("with a headshot.");
+        }
+        if (document.getElementById("bodyshots").checked == true){
+          possiblekills.push("with a body shot.");
+        }
+        if (document.getElementById("accidents").checked == true){
+          possiblekills.push("in an accident.");
+        }
+        if (document.getElementById("anykill").checked == true){
+          possiblekills.push("using any method.");
+        }
+        <!--------------------------------------------- BODYGUARD KILL CONDITIONS -->
+        if (document.getElementById("bodyguardkills").checked == true){
+        if (document.getElementById("snipershots").checked == true){
+          possibleguardkills.push(" with your sniper rifle.");
+        }
+        if (document.getElementById("headshots").checked == true){
+          possibleguardkills.push(" with headshots.");
+        }
+        if (document.getElementById("bodyshots").checked == true){
+          possibleguardkills.push(" with body shots.");
+        }
+        if (document.getElementById("accidents").checked == true){
+          possibleguardkills.push(" in accidents.");
+        }
+        if (document.getElementById("anykill").checked == true){
+          possibleguardkills.push(".");
+        }
+        }
+        <!--------------------------------------------- CHALLENGES -->
+        if (document.getElementById("challengeson").checked == true){
+        possiblechallenges.push("Between the Devil...", "In The Spider's Web", "Seagulls Sing Your Hearts Away", "No More Happy Hour", "Clean Bill of Health", "...And the Deep Blue Sea", "Electric Feel", "Ghost Ship", "From Here to Eternity", "On the Waterfront", "Quack on the Trigger", "Codename Crane", "Self-Contained Research", "Rat O'Nine Tails");
+        }
+        
+     var killmethod = possiblekills[Math.floor(Math.random() * possiblekills.length)];
+     if (killmethod == null) {
+     errorreset();
+     }
+     document.getElementById("target1pic").innerHTML = '<img src=\'https://i.imgur.com/b6BoNGS.png\' width="100%" height="100%">';
+     document.getElementById("target1killconditions").innerHTML = "Kill Re Thak " + killmethod;
+     
+     var killmethod = possiblekills[Math.floor(Math.random() * possiblekills.length)];
+     if (killmethod == null) {
+     errorreset();
+     }
+     document.getElementById("target2pic").innerHTML = '<img src=\'https://i.imgur.com/TuwWAaR.png\' width="100%" height="100%">';
+     document.getElementById("target2killconditions").innerHTML = "Kill Lhom Kwai " + killmethod;
+     
+     var killmethod = possiblekills[Math.floor(Math.random() * possiblekills.length)];
+     if (killmethod == null) {
+     errorreset();
+     }
+     document.getElementById("target3pic").innerHTML = '<img src=\'https://i.imgur.com/CuSNjes.png\' width="100%" height="100%">';
+     document.getElementById("target3killconditions").innerHTML = "Kill Jin Noo " + killmethod;
+     
+     if (document.getElementById("bodyguardkills").checked == true){
+     var guardkillmethod = possibleguardkills[Math.floor(Math.random() * possiblekills.length)];
+     if (guardkillmethod == null) {
+     errorreset();
+     }
+     document.getElementById("target4pic").innerHTML = '<img src=\'https://i.imgur.com/Vfc41iY.png\' width="100%" height="100%">';
+     document.getElementById("target4killconditions").innerHTML = "Kill as many bodyguards as you can" + guardkillmethod;
+     } else {
+     document.getElementById("target4pic").innerHTML = "";
+     document.getElementById("target4killconditions").innerHTML = "";
+     }
+     
+     if (document.getElementById("challengeson").checked == true){
+     var challengemethod1 = possiblechallenges[Math.floor(Math.random() * possiblechallenges.length)];
+     document.getElementById("challengeconditions1").innerHTML = "Complete the Challenge: " + "&diams; " + challengemethod1
+     }
+   }
+<!-------------------------------------------------------------------------------- SIBERIA -->
+    if (x == "siberia"){
+    bgChange();
+    document.getElementById("missiontitle").innerHTML = "Siberia - Crime and Punishment"
+        <!--------------------------------------------- KILL CONDITIONS -->
+        if (document.getElementById("snipershots").checked == true){
+          possiblekills.push("with your sniper rifle.");
+        }
+        if (document.getElementById("headshots").checked == true){
+          possiblekills.push("with a headshot.");
+        }
+        if (document.getElementById("bodyshots").checked == true){
+          possiblekills.push("with a body shot.");
+        }
+        if (document.getElementById("accidents").checked == true){
+          possiblekills.push("in an accident.");
+        }
+        if (document.getElementById("anykill").checked == true){
+          possiblekills.push("using any method.");
+        }
+        <!--------------------------------------------- BODYGUARD KILL CONDITIONS -->
+        if (document.getElementById("bodyguardkills").checked == true){
+        if (document.getElementById("snipershots").checked == true){
+          possibleguardkills.push(" with your sniper rifle.");
+        }
+        if (document.getElementById("headshots").checked == true){
+          possibleguardkills.push(" with headshots.");
+        }
+        if (document.getElementById("bodyshots").checked == true){
+          possibleguardkills.push(" with body shots.");
+        }
+        if (document.getElementById("accidents").checked == true){
+          possibleguardkills.push(" in accidents.");
+        }
+        if (document.getElementById("anykill").checked == true){
+          possibleguardkills.push(".");
+        }
+        }
+        <!--------------------------------------------- CHALLENGES -->
+        if (document.getElementById("challengeson").checked == true){
+        possiblechallenges.push("Lullaby of Birdland", "Where Are My Pants?", "Snitches Get Stitches", "Instigator", "Porcelain King", "Fusil For Everyone", "Cold War", "Burning Down The House", "The Great Escape", "Black Site", "A Feat For Crows", "Prison Food", "False Flag", "Na Zdorovje");
+        }
+        
+     var killmethod = possiblekills[Math.floor(Math.random() * possiblekills.length)];
+     if (killmethod == null) {
+     errorreset();
+     }
+     document.getElementById("target1pic").innerHTML = '<img src=\'https://i.imgur.com/3vEeeN2.png\' width="100%" height="100%">';
+     document.getElementById("target1killconditions").innerHTML = "Kill Roman Khabko " + killmethod;
+     
+     var killmethod = possiblekills[Math.floor(Math.random() * possiblekills.length)];
+     if (killmethod == null) {
+     errorreset();
+     }
+     document.getElementById("target2pic").innerHTML = '<img src=\'https://i.imgur.com/z424V8J.png\' width="100%" height="100%">';
+     document.getElementById("target2killconditions").innerHTML = "Kill Vitaly Reznikov " + killmethod;
+     
+     if (document.getElementById("objroulette").checked == true){
+var possibleobjectives = ["Start a Riot by shooting a door panel.", "Start a Riot by making a guard fall into the prison.", "Start a Riot by opening the main gate.", "Start a Riot by shooting a padlock.", "Start a Riot by causing a truck to explode.", "Start a Riot by setting the west building on fire."];
+var objectivesmethod = possibleobjectives[Math.floor(Math.random() * possibleobjectives.length)];
+     document.getElementById("target3pic").innerHTML = '<img src=\'https://i.imgur.com/EDo1Nxe.png\' width="100%" height="100%">';
+     document.getElementById("target3killconditions").innerHTML = objectivesmethod;
+     } else {
+     document.getElementById("target3pic").innerHTML = "";
+     document.getElementById("target3killconditions").innerHTML = "";
+     }
+     
+     if (document.getElementById("bodyguardkills").checked == true){
+     var guardkillmethod = possibleguardkills[Math.floor(Math.random() * possiblekills.length)];
+     if (guardkillmethod == null) {
+     errorreset();
+     }
+     document.getElementById("target4pic").innerHTML = '<img src=\'https://i.imgur.com/SrQxQsS.png\' width="100%" height="100%">';
+     document.getElementById("target4killconditions").innerHTML = "Kill as many Siberian Tigers as you can" + guardkillmethod;
+     } else {
+     document.getElementById("target4pic").innerHTML = "";
+     document.getElementById("target4killconditions").innerHTML = "";
+     }
+     
+     if (document.getElementById("challengeson").checked == true){
+     var challengemethod1 = possiblechallenges[Math.floor(Math.random() * possiblechallenges.length)];
+     document.getElementById("challengeconditions1").innerHTML = "Complete the Challenge: " + "&diams; " + challengemethod1
+     }
+   }
+}
+</script>
+<!----------------------------------------------------------------------------------------- ROULETTE ENDS HERE -->
+
+
+
+<script>
+function selectElement(id, valueToSelect) {    
+    let element = document.getElementById(id);
+    element.value = valueToSelect;
+}
+</script>
+
+<script>
+function advance() {
+var x = document.getElementById("mission").value;
+    if (x == "rando"){
+    selectElement('mission', 'himmelstein')
+    } else if (x == "himmelstein"){
+    selectElement('mission', 'hantuport')
+    } else if (x == "hantuport"){
+    selectElement('mission', 'siberia')
+    } else if (x == "siberia"){
+    selectElement('mission', 'rando')
+    }
+document.body.scrollTop = document.documentElement.scrollTop = 0;
+roulette();
+}
+</script>
+
+<script>
+function preroulette() {
+var strikes = 0;
+var x = document.getElementById("mission").value;
+document.body.scrollTop = document.documentElement.scrollTop = 0;
+roulette();
+}
+</script>
+
+<script>
+function checkchallenges() {
+    if (challengemethod1 === challengemethod2) {
+    alert("Hello! I am an alert box!!");
+    } else if (challengemethod2 === challengemethod3) {
+    alert("Hello! I am an alert box!!");
+    } else if (challengemethod3 === challengemethod1) {
+    alert("Hello! I am an alert box!!");
+    }
+}
+</script>
+
+<script>
+function crazywarning() {
+if (document.getElementById("crazywarnings").checked == true){
+if (document.getElementById("loaccident").checked == false){
+     alert("Crazy Kill Condition Warning!!! \nOne (or more) of the kill conditions you rolled is an insanely hard accident kill that may involve dragging or luring a target far away from their normal range. Proceed only if you dare - otherwise, reroll! \n(To disable these warnings, uncheck 'Crazy Condition Warnings' under 'Other Options.'");
+}
+}
+}
+</script>
+
+<script>
+function conflictwarning() {
+     alert("Warning - The kill conditions you rolled are impossible to complete as they are. You can either tweak them to your liking or reroll.");
+}
+</script>
+
+<script>
+function conflictcheck() {
+     if(divs[i].innerHTML.indexOf("ICA") !== -1) {
+     alert("conflictcheck");
+     }
+}
+</script>
+
+<script>
+function errorreset() {
+alert("Error: Undefined kill condition. Adjust your options for this mission.");
+document.getElementById("missiontitle").innerHTML = ""; 
+document.getElementById("pickupconditions").innerHTML = "";   
+document.getElementById("startconditions").innerHTML = "";
+document.getElementById("target1pic").innerHTML = '';
+document.getElementById("target1killconditions").innerHTML = "";
+document.getElementById("target2pic").innerHTML = '';
+document.getElementById("target2killconditions").innerHTML = "";
+document.getElementById("target3pic").innerHTML = '';
+document.getElementById("target3killconditions").innerHTML = "";
+document.getElementById("target4pic").innerHTML = '';
+document.getElementById("target4killconditions").innerHTML = "";
+document.getElementById("exitconditions").innerHTML = "";
+selectElement('mission', 'rando');
+document.body.style.backgroundColor = "#000000";
+bgchange();
+}
+</script>
+
+<script>
+function disguisereset() {
+alert("Error: Undefined disguise condition. Adjust your options for this mission.");
+document.getElementById("missiontitle").innerHTML = ""; 
+document.getElementById("pickupconditions").innerHTML = "";   
+document.getElementById("startconditions").innerHTML = "";
+document.getElementById("target1pic").innerHTML = '';
+document.getElementById("target1killconditions").innerHTML = "";
+document.getElementById("target2pic").innerHTML = '';
+document.getElementById("target2killconditions").innerHTML = "";
+document.getElementById("target3pic").innerHTML = '';
+document.getElementById("target3killconditions").innerHTML = "";
+document.getElementById("target4pic").innerHTML = '';
+document.getElementById("target4killconditions").innerHTML = "";
+document.getElementById("exitconditions").innerHTML = "";
+selectElement('mission', 'rando');
+document.body.style.backgroundColor = "#ffffff";
+bgchange();
+}
+</script>
+
+<script>
+function icareset() {
+alert("Error: ICA Facility missions do not allow loadouts. Adjust your options for this mission.");
+document.getElementById("missiontitle").innerHTML = ""; 
+document.getElementById("pickupconditions").innerHTML = "";   
+document.getElementById("startconditions").innerHTML = "";
+document.getElementById("target1pic").innerHTML = '';
+document.getElementById("target1killconditions").innerHTML = "";
+document.getElementById("target2pic").innerHTML = '';
+document.getElementById("target2killconditions").innerHTML = "";
+document.getElementById("target3pic").innerHTML = '';
+document.getElementById("target3killconditions").innerHTML = "";
+document.getElementById("target4pic").innerHTML = '';
+document.getElementById("target4killconditions").innerHTML = "";
+document.getElementById("exitconditions").innerHTML = "";
+selectElement('mission', 'rando');
+document.body.style.backgroundColor = "#000000";
+bgchange();
+}
+</script>
+
+<script>
+function constantreset() {
+alert("Error: You must allow In-Level Nonlethal Weapons or Loadout Nonlethal Weapons in order to use the Constant KO Conditions option.");
+document.getElementById("missiontitle").innerHTML = ""; 
+document.getElementById("pickupconditions").innerHTML = "";   
+document.getElementById("startconditions").innerHTML = "";
+document.getElementById("target1pic").innerHTML = '';
+document.getElementById("target1killconditions").innerHTML = "";
+document.getElementById("target2pic").innerHTML = '';
+document.getElementById("target2killconditions").innerHTML = "";
+document.getElementById("target3pic").innerHTML = '';
+document.getElementById("target3killconditions").innerHTML = "";
+document.getElementById("target4pic").innerHTML = '';
+document.getElementById("target4killconditions").innerHTML = "";
+document.getElementById("exitconditions").innerHTML = "";
+selectElement('mission', 'rando');
+document.body.style.backgroundColor = "#000000";
+bgchange();
+}
+</script>
+
+<!--WIP Multiple Challenges script:
+     if (document.getElementById("challengeson").checked == true){
+     var x = document.getElementById("challengenumber").value;
+     if (x == "1challenge"){
+     var challengemethod1 = possiblechallenges[Math.floor(Math.random() * possiblechallenges.length)];
+     document.getElementById("challengeconditions1").innerHTML = "Complete the Challenge: " + "&diams; " + challengemethod1
+     var challengemethod2 = possiblechallenges[Math.floor(Math.random() * possiblechallenges.length)];
+     document.getElementById("challengeconditions2").innerHTML = "";
+     var challengemethod3 = possiblechallenges[Math.floor(Math.random() * possiblechallenges.length)];
+     document.getElementById("challengeconditions3").innerHTML = "";
+     } else if (x == "2challenge"){
+     var challengemethod1 = possiblechallenges[Math.floor(Math.random() * possiblechallenges.length)];
+     document.getElementById("challengeconditions1").innerHTML = "Complete the Challenge: " + "&diams; " + challengemethod1
+     var challengemethod2 = possiblechallenges[Math.floor(Math.random() * possiblechallenges.length)];
+     document.getElementById("challengeconditions2").innerHTML = "Complete the Challenge: " + "&diams; " + challengemethod2
+     var challengemethod3 = possiblechallenges[Math.floor(Math.random() * possiblechallenges.length)];
+     document.getElementById("challengeconditions3").innerHTML = "";
+     } else if (x == "3challenge"){
+     var challengemethod1 = possiblechallenges[Math.floor(Math.random() * possiblechallenges.length)];
+     document.getElementById("challengeconditions1").innerHTML = "Complete the Challenge: " + "&diams; " + challengemethod1
+     var challengemethod2 = possiblechallenges[Math.floor(Math.random() * possiblechallenges.length)];
+     document.getElementById("challengeconditions2").innerHTML = "Complete the Challenge: " + "&diams; " + challengemethod2
+     var challengemethod3 = possiblechallenges[Math.floor(Math.random() * possiblechallenges.length)];
+     document.getElementById("challengeconditions3").innerHTML = "Complete the Challenge: " + "&diams; " + challengemethod3
+     }
+     checkchallenges();
+        } else {
+     document.getElementById("challengeconditions").innerHTML = "";
+        }
+        -->
+
+
+
+<br />
+<br />
+<p><i>Planned Future Features:</i></p><ul>
+  <li><i>Several. I don't know Sniper Assassin all that well, so feedback is appreciated.</i></li>
+  <li><i>Multiple Randomized Challenges option</i></li>
+  <li><i>Specific Accidents for Targets (Maybe)</i></li>
+  <li><i>Anything else that gets suggested that I can manage to put in!</i></li>
+</ul>
+<br />
+<br />
+<p><i>Made by 3FacedJanus, aka BTWNM. Hitman is (TM) IO Interactive.</i></p>
+<p><i>Check out the <a href="https://3facedjanus.github.io/">World of Assassination Roulette</a> for the main campaign missions!</i></p>
+<p><i>Special thanks to <a href="https://thekotti.github.io/hitman.html">Kotti</a>, <a href="https://www.hitmaps.com/">Hitmaps.com</a>, and everyone at <a href="https://www.ioi.dk/">IOI</a>.</i></p>
+<br />
+</body>
+</html>
