@@ -59,7 +59,7 @@ body {
 <body style="font-family:calibri; font-size: 16px; color:black;" onload="bgChange()">
 <span style="font-family:Microsoft JhengHei UI; font-size: 30px; font-weight: bold;">SNIPER ASSASSIN ROULETTE</span>
 <br />
-<span>Version 1.0</span>
+<span>Version 1.01</span>
 <hr>
 <button onclick="preroulette()">Reroll Roulette</button>
 <button onclick="randommission()">Random Mission</button>
@@ -300,6 +300,8 @@ function roulette() {
      if (document.getElementById("challengeson").checked == true){
      var challengemethod1 = possiblechallenges[Math.floor(Math.random() * possiblechallenges.length)];
      document.getElementById("challengeconditions1").innerHTML = "Complete the Challenge: " + "&diams; " + challengemethod1
+     } else {
+     document.getElementById("challengeconditions1").innerHTML = ""
      }
    }
 <!-------------------------------------------------------------------------------- HANTU PORT -->
@@ -381,6 +383,8 @@ function roulette() {
      if (document.getElementById("challengeson").checked == true){
      var challengemethod1 = possiblechallenges[Math.floor(Math.random() * possiblechallenges.length)];
      document.getElementById("challengeconditions1").innerHTML = "Complete the Challenge: " + "&diams; " + challengemethod1
+     } else {
+     document.getElementById("challengeconditions1").innerHTML = ""
      }
    }
 <!-------------------------------------------------------------------------------- SIBERIA -->
@@ -465,6 +469,8 @@ var objectivesmethod = possibleobjectives[Math.floor(Math.random() * possibleobj
      if (document.getElementById("challengeson").checked == true){
      var challengemethod1 = possiblechallenges[Math.floor(Math.random() * possiblechallenges.length)];
      document.getElementById("challengeconditions1").innerHTML = "Complete the Challenge: " + "&diams; " + challengemethod1
+     } else {
+     document.getElementById("challengeconditions1").innerHTML = ""
      }
    }
 }
